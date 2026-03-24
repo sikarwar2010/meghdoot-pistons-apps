@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from 'sonner';
+import { ConvexClientProvider } from '@/components/commons/ConvexClientProvider';
+import SyncUser from '@/components/commons/syncUser';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,7 +35,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ClerkProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            <ConvexClientProvider>
+              {children}
+              <SyncUser />
+              <Toaster richColors position="top-center" />
+            </ConvexClientProvider>
+          </TooltipProvider>
         </ClerkProvider>
       </body>
     </html>
