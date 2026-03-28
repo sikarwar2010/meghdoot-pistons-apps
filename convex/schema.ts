@@ -8,10 +8,20 @@ export default defineSchema({
     email: v.string(),
     name: v.string(),
     imageUrl: v.optional(v.string()),
-    role: v.union(v.literal('admin'), v.literal('editor'), v.literal('user')),
+    role: v.union(
+      v.literal('admin'),
+      v.literal('editor'),
+      v.literal('user'),
+      v.literal('member')
+    ),
+    status: v.optional(v.union(v.literal('active'), v.literal('suspended'))),
+    createdAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
   })
     .index('by_clerk_id', ['clerkId'])
-    .index('by_email', ['email']),
+    .index('by_email', ['email'])
+    .index('by_role', ['role'])
+    .index('by_status', ['status']),
 
   // blog project
   blogs: defineTable({

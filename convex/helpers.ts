@@ -21,9 +21,9 @@ export async function requireAdmin(ctx: QueryCtx | MutationCtx) {
   return user;
 }
 
-export async function requireEditorOrAdmin(ctx: QueryCtx | MutationCtx) {
+export async function requireMemberOrAdmin(ctx: QueryCtx | MutationCtx) {
   const user = await requireUser(ctx);
-  if (user.role !== 'admin' && user.role !== 'editor')
-    throw new Error('Forbidden: Editor or Admin only');
+  if (user.role !== 'admin' && user.role !== 'member' && user.role !== 'editor')
+    throw new Error('Forbidden: Member or Admin only');
   return user;
 }

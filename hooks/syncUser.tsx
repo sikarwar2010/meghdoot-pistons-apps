@@ -14,7 +14,7 @@ export default function SyncUser() {
       upsertUser({
         clerkId: user.id,
         email: user.emailAddresses[0].emailAddress,
-        name: user.fullName ?? "",
+        name: user.fullName ?? '',
         imageUrl: user.imageUrl,
       });
     }

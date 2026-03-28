@@ -5,7 +5,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from 'sonner';
 import { ConvexClientProvider } from '@/components/commons/ConvexClientProvider';
-import SyncUser from '@/components/commons/syncUser';
+import SyncUser from '@/hooks/syncUser';
+import { ThemeProvider } from '@/components/commons/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,13 +36,20 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ClerkProvider>
-          <TooltipProvider>
-            <ConvexClientProvider>
-              {children}
-              <SyncUser />
-              <Toaster richColors position="top-center" />
-            </ConvexClientProvider>
-          </TooltipProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>
+              <ConvexClientProvider>
+                {children}
+                <SyncUser />
+                <Toaster richColors position="top-center" />
+              </ConvexClientProvider>
+            </TooltipProvider>
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>

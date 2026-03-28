@@ -1,5 +1,6 @@
 import { v } from 'convex/values';
 import { mutation, query } from './_generated/server';
+import { paginationOptsValidator } from 'convex/server';
 import { getCurrentUser, requireAdmin } from './helpers';
 
 // called from clerk webhook or on first sign-in
@@ -42,7 +43,7 @@ export const getUser = query({
 export const setRole = mutation({
   args: {
     userId: v.id('users'),
-    role: v.union(v.literal('admin'), v.literal('editor'), v.literal('user')),
+    role: v.union(v.literal('admin'), v.literal('member'), v.literal('user')),
   },
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
@@ -71,5 +72,36 @@ export const getCurrentUserRole = query({
   handler: async (ctx) => {
     const user = await getCurrentUser(ctx);
     return user?.role;
+  },
+});
+
+export const listUsers = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    await requireAdmin(ctx);
+    return await ctx.db
+      .query('users')
+      .order('desc')
+      .paginate(args.paginationOpts);
+  },
+});
+
+export const updateStatus = mutation({
+  args: {
+    userId: v.id('users'),
+    status: v.union(v.literal('active'), v.literal('suspended')),
+  },
+  handler: async (ctx, args) => {
+    await requireAdmin(ctx);
+    // ensure admin users can't easily suspend themselves to avoid lockout
+    const callingUser = await getCurrentUser(ctx);
+    if (
+      callingUser &&
+      callingUser._id === args.userId &&
+      args.status === 'suspended'
+    ) {
+      throw new Error('You cannot suspend your own account');
+    }
+    await ctx.db.patch(args.userId, { status: args.status });
   },
 });
