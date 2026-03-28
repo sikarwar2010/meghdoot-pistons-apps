@@ -53,7 +53,7 @@ function SidebarContent({ role }: { role: AppRole }) {
         </div>
         <div>
           <div className="text-sm font-bold font-display">
-            <span className="text-primary">Auto</span>Parts
+            <span className="text-primary">Meghdoot</span>Pistons
           </div>
           <div className="text-[10px] text-muted-foreground uppercase tracking-widest">
             Admin Panel
