@@ -1,16 +1,16 @@
-import FrontPage from '@/components/web/home/frontpage';
+import PistonPinsPage from '@/components/web/products/piston-pin';
 import { Metadata } from 'next/types';
 
 export const metadata: Metadata = {
-  title: 'Home',
+  title: 'Piston Rings',
   description:
     'Meghdoot piston is a leading provider for pistons and parts for automobiles.',
 };
 
-export default function Home() {
+export default function PistonPins() {
   return (
     <div>
-      <FrontPage />
+      <PistonPinsPage />
     </div>
   );
 }

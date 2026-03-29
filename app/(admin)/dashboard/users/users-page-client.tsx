@@ -48,7 +48,10 @@ export default function UsersPageClient() {
   const updateStatus = useMutation(api.users.updateStatus);
   const deleteUser = useMutation(api.users.deleteUser);
 
-  const handleRoleChange = async (userId: Id<'users'>, newRole: AssignableRole) => {
+  const handleRoleChange = async (
+    userId: Id<'users'>,
+    newRole: AssignableRole
+  ) => {
     try {
       await updateRole({ userId, role: newRole });
       toast.success(`User role updated to ${newRole}`);
@@ -169,7 +172,9 @@ export default function UsersPageClient() {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     <Badge
-                      variant={normalizedRole === 'admin' ? 'default' : 'secondary'}
+                      variant={
+                        normalizedRole === 'admin' ? 'default' : 'secondary'
+                      }
                       className="capitalize"
                     >
                       {normalizedRole}
@@ -199,7 +204,9 @@ export default function UsersPageClient() {
 
                         {user.status === 'suspended' ? (
                           <DropdownMenuItem
-                            onClick={() => handleStatusChange(user._id, 'active')}
+                            onClick={() =>
+                              handleStatusChange(user._id, 'active')
+                            }
                           >
                             <UserCheck className="mr-2 h-4 w-4 text-green-600" />
                             Activate User

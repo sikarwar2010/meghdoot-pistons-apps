@@ -23,7 +23,7 @@ const navItems = [
   { name: 'About', path: '/about' },
   {
     name: 'Products',
-    path: '/products',
+    path: '',
     submenu: [
       { name: 'Pistons', path: '/pistons' },
       { name: 'Piston Pins', path: '/pistonpins' },
