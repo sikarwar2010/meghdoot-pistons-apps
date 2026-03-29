@@ -9,6 +9,7 @@
  */
 
 import type * as contacts from "../contacts.js";
+import type * as events from "../events.js";
 import type * as helpers from "../helpers.js";
 import type * as users from "../users.js";
 
@@ -20,6 +21,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   contacts: typeof contacts;
+  events: typeof events;
   helpers: typeof helpers;
   users: typeof users;
 }>;
