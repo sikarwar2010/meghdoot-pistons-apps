@@ -18,6 +18,7 @@ export interface Blog {
   content: string;
   excerpt?: string;
   coverImageUrl?: string;
+  coverImageId?: Id<'_storage'>;
   tags: string[];
   authorId: string;
   authorName: string;
