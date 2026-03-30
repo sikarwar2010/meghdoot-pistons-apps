@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
@@ -14,6 +14,7 @@ interface ImageUploadProps {
   accept?: string;
   maxSizeMB?: number;
   className?: string;
+  storageType?: 'blog' | 'catalog' | 'events';
 }
 
 export function ImageUpload({
@@ -23,13 +24,22 @@ export function ImageUpload({
   accept = 'image/*',
   maxSizeMB = 5,
   className = '',
+  storageType = 'blog',
 }: ImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string>(value ?? '');
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const generateUploadUrl = useMutation(api.blog.generateUploadUrl);
+  useEffect(() => {
+    setPreviewUrl(value ?? '');
+  }, [value]);
+
+  const generateUploadUrl = useMutation(
+    storageType === 'catalog'
+      ? api.catalog.generateUploadUrl
+      : api.blog.generateUploadUrl
+  );
 
   const handleUpload = useCallback(
     async (file: File) => {

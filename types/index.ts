@@ -72,6 +72,8 @@ export interface CatalogEntry {
   pistonSpecs: PistonSpecs;
   ringSizes: RingSizes;
   pistonType?: string;
+  imageId?: Id<'_storage'>;
+  imageUrl?: string;
   createdAt: number;
   updatedAt: number;
 }

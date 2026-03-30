@@ -9,6 +9,7 @@
  */
 
 import type * as blog from "../blog.js";
+import type * as catalog from "../catalog.js";
 import type * as contacts from "../contacts.js";
 import type * as events from "../events.js";
 import type * as helpers from "../helpers.js";
@@ -22,6 +23,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   blog: typeof blog;
+  catalog: typeof catalog;
   contacts: typeof contacts;
   events: typeof events;
   helpers: typeof helpers;

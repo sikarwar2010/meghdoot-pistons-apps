@@ -89,6 +89,7 @@ export default defineSchema({
       note: v.optional(v.string()), // e.g. "T15+"
     }),
     pistonType: v.optional(v.string()),
+    imageId: v.optional(v.id('_storage')),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
