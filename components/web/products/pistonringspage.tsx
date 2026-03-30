@@ -170,6 +170,7 @@ const PistonRingsPage = () => {
                 src="https://res.cloudinary.com/dfvtnrisi/image/upload/v1691685606/dreamstime_xxl_78054868_xuyndp.jpg"
                 alt="Advanced piston rings"
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
                 className="object-cover"
               />
             </motion.div>

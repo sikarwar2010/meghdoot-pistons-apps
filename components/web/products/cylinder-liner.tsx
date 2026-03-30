@@ -296,6 +296,7 @@ export default function CylinderLinersPage() {
                       src={product.image || '/placeholder.svg'}
                       alt={product.title}
                       fill
+                      sizes="(max-width: 640px) 320px, (max-width: 768px) 384px, (max-width: 1024px) 512px, 640px"
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>

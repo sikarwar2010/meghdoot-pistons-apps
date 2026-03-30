@@ -36,7 +36,6 @@ export const getBySlug = query({
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
-    await requireMemberOrAdmin(ctx);
     const blogs = ctx.db.query('blogs').order('desc').collect();
     return blogs;
   },

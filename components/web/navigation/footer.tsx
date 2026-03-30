@@ -57,7 +57,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/products/pistons"
+                  href="/pistons"
                   className="text-sm text-muted-foreground hover:text-primary flex items-center"
                 >
                   <ExternalLink className="h-3 w-3 mr-2" />
@@ -66,7 +66,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products/pins"
+                  href="/pistonpins"
                   className="text-sm text-muted-foreground hover:text-primary flex items-center"
                 >
                   <ExternalLink className="h-3 w-3 mr-2" />
@@ -75,7 +75,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products/rings"
+                  href="/pistonrings"
                   className="text-sm text-muted-foreground hover:text-primary flex items-center"
                 >
                   <ExternalLink className="h-3 w-3 mr-2" />
@@ -84,7 +84,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products/liners"
+                  href="/cylinderliners"
                   className="text-sm text-muted-foreground hover:text-primary flex items-center"
                 >
                   <ExternalLink className="h-3 w-3 mr-2" />

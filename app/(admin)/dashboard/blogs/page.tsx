@@ -10,6 +10,12 @@ import { formatDate } from '@/lib/utils';
 import type { Blog } from '@/types';
 import type { Id } from '@/convex/_generated/dataModel';
 import { BlogCoverImage } from '@/components/admin/BlogCoverImage';
+import {
+  Empty,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 
 export default function AdminBlogsPage() {
   const blogs = useQuery(api.blog.listAll);
@@ -18,6 +24,24 @@ export default function AdminBlogsPage() {
 
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Blog | null>(null);
+
+  // Handle loading state while auth is being established
+  // Convex will keep trying until authentication succeeds
+  if (blogs === undefined) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Empty>
+          <EmptyMedia variant="icon">
+            <BookOpen className="h-10 w-10" />
+          </EmptyMedia>
+          <EmptyTitle>Loading blogs...</EmptyTitle>
+          <EmptyDescription>
+            Please wait while we fetch your blog posts
+          </EmptyDescription>
+        </Empty>
+      </div>
+    );
+  }
 
   const handleDelete = async (id: Id<'blogs'>) => {
     if (!confirm('Delete this post permanently?')) return;

@@ -27,3 +27,12 @@ export async function requireMemberOrAdmin(ctx: QueryCtx | MutationCtx) {
     throw new Error('Forbidden: Member or Admin only');
   return user;
 }
+
+// Non-throwing version - returns null if not authenticated
+export async function getCurrentUserOrNull(ctx: QueryCtx | MutationCtx) {
+  try {
+    return await getCurrentUser(ctx);
+  } catch {
+    return null;
+  }
+}
