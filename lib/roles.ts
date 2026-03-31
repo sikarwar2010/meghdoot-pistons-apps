@@ -1,8 +1,10 @@
 export type AppRole = 'admin' | 'member' | 'user';
-export type StoredRole = AppRole | null | undefined;
+export type LegacyRole = 'editor';
+export type StoredRole = AppRole | LegacyRole | null | undefined;
 
 export function normalizeRole(role: StoredRole): AppRole {
   if (role === 'admin') return 'admin';
+  if (role === 'editor') return 'member';
   if (role === 'member') return 'member';
   return 'user';
 }
