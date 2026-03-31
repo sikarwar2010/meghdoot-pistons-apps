@@ -144,6 +144,45 @@ const columns: ColumnDef<CatalogEntry>[] = [
     },
   },
   {
+    id: 'ringSize3',
+    header: 'Ring 3',
+    accessorFn: (row) => row.ringSizes.ring3,
+    cell: ({ getValue }) => {
+      const v = getValue() as number | undefined;
+      return (
+        <span className="font-mono text-xs text-amber-400/60">
+          {v != null ? v.toFixed(2) : '—'}
+        </span>
+      );
+    },
+  },
+  {
+    id: 'ringSize4',
+    header: 'Ring 4',
+    accessorFn: (row) => row.ringSizes.ring4,
+    cell: ({ getValue }) => {
+      const v = getValue() as number | undefined;
+      return (
+        <span className="font-mono text-xs text-amber-400/50">
+          {v != null ? v.toFixed(2) : '—'}
+        </span>
+      );
+    },
+  },
+  {
+    id: 'ringSize5',
+    header: 'Ring 5',
+    accessorFn: (row) => row.ringSizes.ring5,
+    cell: ({ getValue }) => {
+      const v = getValue() as number | undefined;
+      return (
+        <span className="font-mono text-xs text-amber-400/40">
+          {v != null ? v.toFixed(2) : '—'}
+        </span>
+      );
+    },
+  },
+  {
     id: 'note',
     header: 'Note',
     accessorFn: (row) => row.ringSizes.note,

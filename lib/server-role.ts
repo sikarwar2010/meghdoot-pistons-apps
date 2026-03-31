@@ -28,7 +28,7 @@ export const getCurrentRole = cache(async (): Promise<AppRole> => {
 
 export async function requireRole(
   allowedRoles: AppRole[],
-  redirectPath = '/dashboard/blogs',
+  redirectPath = '/dashboard/blogs'
 ): Promise<AppRole> {
   const role = await getCurrentRole();
   if (!allowedRoles.includes(role)) {

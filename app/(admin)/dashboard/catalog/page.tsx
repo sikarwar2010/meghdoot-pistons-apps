@@ -8,7 +8,6 @@ import { CatalogTable } from '@/components/admin/catalog/catelogtable';
 import { CatalogForm } from '@/components/admin/catalog/catalogform';
 import { Plus, Package, Database } from 'lucide-react';
 import type { CatalogEntry } from '@/types';
-import type { Id } from '@/convex/_generated/dataModel';
 import { useRouter } from 'next/navigation';
 
 export default function AdminCatalogPage() {
@@ -22,6 +21,7 @@ export default function AdminCatalogPage() {
     brand: brand || undefined,
     search: search || undefined,
   });
+
   const brands = useQuery(api.catalog.getBrands);
   const remove = useMutation(api.catalog.remove);
   const seed = useMutation(api.catalog.seed);

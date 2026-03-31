@@ -24,6 +24,8 @@ interface CatalogFormData {
   ring1: number;
   ring2?: number;
   ring3?: number;
+  ring4?: number;
+  ring5?: number;
   ringNote?: string;
   pistonType?: string;
   imageId?: Id<'_storage'>;
@@ -42,8 +44,12 @@ const catalogSchema = z.object({
   ring1: z.coerce.number().positive('Required'),
   ring2: z.coerce.number().optional(),
   ring3: z.coerce.number().optional(),
+  ring4: z.coerce.number().optional(),
+  ring5: z.coerce.number().optional(),
   ringNote: z.string().optional(),
   pistonType: z.string().optional(),
+  imageId: z.custom<Id<'_storage'>>().optional(),
+  imageUrl: z.string().optional(),
 });
 
 interface Props {
@@ -77,6 +83,8 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
       ring1: initialData?.ringSizes.ring1,
       ring2: initialData?.ringSizes.ring2,
       ring3: initialData?.ringSizes.ring3,
+      ring4: initialData?.ringSizes.ring4,
+      ring5: initialData?.ringSizes.ring5,
       ringNote: initialData?.ringSizes.note ?? '',
       pistonType: initialData?.pistonType ?? '',
       imageId: initialData?.imageId,
@@ -99,6 +107,8 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
       ring1: initialData.ringSizes.ring1,
       ring2: initialData.ringSizes.ring2,
       ring3: initialData.ringSizes.ring3,
+      ring4: initialData.ringSizes.ring4,
+      ring5: initialData.ringSizes.ring5,
       ringNote: initialData.ringSizes.note ?? '',
       pistonType: initialData.pistonType ?? '',
       imageId: initialData.imageId,
@@ -122,6 +132,8 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
         ring1: data.ring1,
         ring2: data.ring2 || undefined,
         ring3: data.ring3 || undefined,
+        ring4: data.ring4 || undefined,
+        ring5: data.ring5 || undefined,
         note: data.ringNote || undefined,
       },
       pistonType: data.pistonType || undefined,
@@ -149,246 +161,285 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
     'block text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wider';
 
   return (
-    <div className="space-y-6 fade-up max-w-3xl">
-      <div className="flex items-center gap-4">
-        <button
-          onClick={onCancel}
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back
-        </button>
-        <h1 className="text-2xl font-bold font-display">
-          {initialData ? 'Edit Catalog Entry' : 'New Catalog Entry'}
-        </h1>
+    <div className="fade-up w-full space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onCancel}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back
+          </button>
+          <h1 className="text-2xl sm:text-3xl font-bold font-display">
+            {initialData ? 'Edit Catalog Entry' : 'New Catalog Entry'}
+          </h1>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Fill all required specs and save.
+        </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {/* Product Image */}
-        <div className="rounded-xl border border-border/50 bg-card/40 p-6">
-          <ImageUpload
-            value={watch('imageUrl')}
-            imageId={watch('imageId')}
-            onChange={(url, imageId) => {
-              setValue('imageId', imageId);
-              setValue('imageUrl', url ?? '');
-            }}
-            storageType="catalog"
-            maxSizeMB={5}
-          />
-        </div>
-
-        {/* Basic Info */}
-        <div className="rounded-xl border border-border/50 bg-card/40 p-6">
-          <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
-            <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
-              1
-            </span>
-            Basic Information
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className={labelCls}>Brand *</label>
-              <input
-                {...register('brand')}
-                placeholder="ANDORIA"
-                className={inputCls}
-              />
-              {errors.brand && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.brand.message}
-                </p>
-              )}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 xl:grid-cols-12 gap-6"
+      >
+        <div className="xl:col-span-8 space-y-5">
+          {/* Basic Info */}
+          <div className="rounded-xl border border-border/50 bg-card/40 p-4 sm:p-6">
+            <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
+              <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
+                1
+              </span>
+              Basic Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label className={labelCls}>Brand *</label>
+                <input
+                  {...register('brand')}
+                  placeholder="ANDORIA"
+                  className={inputCls}
+                />
+                {errors.brand && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.brand.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className={labelCls}>Model *</label>
+                <input
+                  {...register('model')}
+                  placeholder="C330,S-231"
+                  className={inputCls}
+                />
+                {errors.model && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.model.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className={labelCls}>Bore Ø (mm) *</label>
+                <input
+                  {...register('boreDiameter')}
+                  type="number"
+                  step="0.01"
+                  placeholder="102.00"
+                  className={inputCls}
+                />
+                {errors.boreDiameter && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.boreDiameter.message}
+                  </p>
+                )}
+              </div>
             </div>
-            <div>
-              <label className={labelCls}>Model *</label>
+            <div className="mt-4 md:max-w-md">
+              <label className={labelCls}>Piston Type</label>
               <input
-                {...register('model')}
-                placeholder="C330,S-231"
-                className={inputCls}
-              />
-              {errors.model && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.model.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className={labelCls}>Bore Ø (mm) *</label>
-              <input
-                {...register('boreDiameter')}
-                type="number"
-                step="0.01"
-                placeholder="102.00"
-                className={inputCls}
-              />
-              {errors.boreDiameter && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.boreDiameter.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="mt-4">
-            <label className={labelCls}>Piston Type</label>
-            <input
-              {...register('pistonType')}
-              placeholder="e.g. Flat, Bowl, Toroidal"
-              className={inputCls}
-            />
-          </div>
-        </div>
-
-        {/* Piston Specs */}
-        <div className="rounded-xl border border-border/50 bg-card/40 p-6">
-          <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
-            <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
-              2
-            </span>
-            Piston Specifications
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div>
-              <label className={labelCls}>TL (mm) *</label>
-              <input
-                {...register('pistonTL')}
-                type="number"
-                step="0.01"
-                placeholder="130.00"
-                className={inputCls}
-              />
-              {errors.pistonTL && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.pistonTL.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className={labelCls}>KH (mm) *</label>
-              <input
-                {...register('pistonKH')}
-                type="number"
-                step="0.01"
-                placeholder="75.30"
-                className={inputCls}
-              />
-              {errors.pistonKH && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.pistonKH.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className={labelCls}>PIN *</label>
-              <input
-                {...register('pistonPIN')}
-                placeholder="38 x 84"
-                className={inputCls}
-              />
-              {errors.pistonPIN && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.pistonPIN.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className={labelCls}>Bowl Dia Ø (mm)</label>
-              <input
-                {...register('pistonBowlDia')}
-                type="number"
-                step="0.01"
-                placeholder="29.00"
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Bowl Depth (mm)</label>
-              <input
-                {...register('pistonBowlDepth')}
-                type="number"
-                step="0.01"
-                placeholder="33.50"
+                {...register('pistonType')}
+                placeholder="e.g. Flat, Bowl, Toroidal"
                 className={inputCls}
               />
             </div>
           </div>
-        </div>
 
-        {/* Ring Sizes */}
-        <div className="rounded-xl border border-border/50 bg-card/40 p-6">
-          <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
-            <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
-              3
-            </span>
-            Ring Sizes
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div>
-              <label className={labelCls}>Ring 1 (mm) *</label>
-              <input
-                {...register('ring1')}
-                type="number"
-                step="0.01"
-                placeholder="2.50"
-                className={inputCls}
-              />
-              {errors.ring1 && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.ring1.message}
-                </p>
-              )}
+          {/* Piston Specs */}
+          <div className="rounded-xl border border-border/50 bg-card/40 p-4 sm:p-6">
+            <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
+              <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
+                2
+              </span>
+              Piston Specifications
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <label className={labelCls}>TL (mm) *</label>
+                <input
+                  {...register('pistonTL')}
+                  type="number"
+                  step="0.01"
+                  placeholder="130.00"
+                  className={inputCls}
+                />
+                {errors.pistonTL && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.pistonTL.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className={labelCls}>KH (mm) *</label>
+                <input
+                  {...register('pistonKH')}
+                  type="number"
+                  step="0.01"
+                  placeholder="75.30"
+                  className={inputCls}
+                />
+                {errors.pistonKH && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.pistonKH.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className={labelCls}>PIN *</label>
+                <input
+                  {...register('pistonPIN')}
+                  placeholder="38 x 84"
+                  className={inputCls}
+                />
+                {errors.pistonPIN && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.pistonPIN.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className={labelCls}>Bowl Dia Ø (mm)</label>
+                <input
+                  {...register('pistonBowlDia')}
+                  type="number"
+                  step="0.01"
+                  placeholder="29.00"
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Bowl Depth (mm)</label>
+                <input
+                  {...register('pistonBowlDepth')}
+                  type="number"
+                  step="0.01"
+                  placeholder="33.50"
+                  className={inputCls}
+                />
+              </div>
             </div>
-            <div>
-              <label className={labelCls}>Ring 2 (mm)</label>
-              <input
-                {...register('ring2')}
-                type="number"
-                step="0.01"
-                placeholder="4.50"
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Ring 3 (mm)</label>
-              <input
-                {...register('ring3')}
-                type="number"
-                step="0.01"
-                placeholder="—"
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Note</label>
-              <input
-                {...register('ringNote')}
-                placeholder="T15+"
-                className={inputCls}
-              />
+          </div>
+
+          {/* Ring Sizes */}
+          <div className="rounded-xl border border-border/50 bg-card/40 p-4 sm:p-6">
+            <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
+              <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
+                3
+              </span>
+              Ring Sizes
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4">
+              <div>
+                <label className={labelCls}>Ring 1 (mm) *</label>
+                <input
+                  {...register('ring1')}
+                  type="number"
+                  step="0.01"
+                  placeholder="2.50"
+                  className={inputCls}
+                />
+                {errors.ring1 && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.ring1.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className={labelCls}>Ring 2 (mm)</label>
+                <input
+                  {...register('ring2')}
+                  type="number"
+                  step="0.01"
+                  placeholder="4.50"
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Ring 3 (mm)</label>
+                <input
+                  {...register('ring3')}
+                  type="number"
+                  step="0.01"
+                  placeholder="—"
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Ring 4 (mm)</label>
+                <input
+                  {...register('ring4')}
+                  type="number"
+                  step="0.01"
+                  placeholder="—"
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Ring 5 (mm)</label>
+                <input
+                  {...register('ring5')}
+                  type="number"
+                  step="0.01"
+                  placeholder="—"
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Note</label>
+                <input
+                  {...register('ringNote')}
+                  placeholder="T15+"
+                  className={inputCls}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60 transition-colors"
-          >
-            {isSubmitting ? (
-              <div className="h-4 w-4 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
-            ) : (
-              <Save className="h-4 w-4" />
-            )}
-            {initialData ? 'Update Entry' : 'Create Entry'}
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="rounded-lg border border-border/50 bg-secondary/30 px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Cancel
-          </button>
-        </div>
+        <aside className="xl:col-span-4">
+          <div className="xl:sticky xl:top-6 space-y-5">
+            {/* Product Image */}
+            <div className="rounded-xl border border-border/50 bg-card/40 p-4 sm:p-6">
+              <ImageUpload
+                value={watch('imageUrl')}
+                imageId={watch('imageId')}
+                onChange={(url, imageId) => {
+                  setValue('imageId', imageId);
+                  setValue('imageUrl', url ?? '');
+                }}
+                storageType="catalog"
+                maxSizeMB={5}
+              />
+            </div>
+
+            <div className="rounded-xl border border-border/50 bg-card/40 p-4 sm:p-6">
+              <p className="text-sm text-muted-foreground mb-4">
+                Review the entry and save. You can edit details anytime.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60 transition-colors"
+                >
+                  {isSubmitting ? (
+                    <div className="h-4 w-4 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4" />
+                  )}
+                  {initialData ? 'Update Entry' : 'Create Entry'}
+                </button>
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="w-full rounded-lg border border-border/50 bg-secondary/30 px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
       </form>
     </div>
   );

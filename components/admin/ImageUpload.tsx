@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
-import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Upload, Loader2 } from 'lucide-react';
 import type { Id } from '@/convex/_generated/dataModel';
 
 interface ImageUploadProps {
@@ -32,8 +32,22 @@ export function ImageUpload({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setPreviewUrl(value ?? '');
-  }, [value]);
+    if (value) {
+      setPreviewUrl(value);
+      return;
+    }
+    if (!imageId) {
+      setPreviewUrl('');
+    }
+  }, [value, imageId]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const generateUploadUrl = useMutation(
     storageType === 'catalog'
@@ -77,7 +91,10 @@ export function ImageUpload({
         const result = await response.json();
         const storageId = result.storageId as Id<'_storage'>;
 
-        // Create a preview URL
+        // Create a local preview URL while form stores only storage ID.
+        if (previewUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(previewUrl);
+        }
         const objectUrl = URL.createObjectURL(file);
         setPreviewUrl(objectUrl);
 

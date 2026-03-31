@@ -21,11 +21,11 @@ export function CatalogCoverImage({
 }: CatalogCoverImageProps) {
   const storageUrl = useQuery(
     api.catalog.getImageUrl,
-    imageId ? { imageId } : 'skip'
+    imageId && !imageUrl ? { imageId } : 'skip'
   );
 
   const [hasError, setHasError] = useState(false);
-  const src = imageId ? (storageUrl ?? imageUrl) : imageUrl;
+  const src = imageUrl ?? storageUrl;
 
   useEffect(() => {
     setHasError(false);

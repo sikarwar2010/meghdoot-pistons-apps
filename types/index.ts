@@ -61,6 +61,8 @@ export interface RingSizes {
   ring1: number;
   ring2?: number;
   ring3?: number;
+  ring4?: number;
+  ring5?: number;
   note?: string;
 }
 

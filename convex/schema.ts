@@ -86,6 +86,8 @@ export default defineSchema({
       ring1: v.number(),
       ring2: v.optional(v.number()),
       ring3: v.optional(v.number()),
+      ring4: v.optional(v.number()),
+      ring5: v.optional(v.number()),
       note: v.optional(v.string()), // e.g. "T15+"
     }),
     pistonType: v.optional(v.string()),
