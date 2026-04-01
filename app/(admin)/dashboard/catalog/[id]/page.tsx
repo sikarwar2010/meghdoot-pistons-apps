@@ -178,14 +178,15 @@ export default function CatalogDetailPage() {
           }
 
           .catalog-print-company-header {
-            box-shadow: 0 1px 0 rgba(201, 162, 39, 0.35);
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.08);
           }
 
           .catalog-print-root {
             width: 186mm !important;
             max-width: 186mm !important;
             margin: 0 auto !important;
-            padding: 15mm 0 13mm 0 !important;
+            /* Reserve space for fixed print header/footer */
+            padding: 14mm 0 12mm 0 !important;
             gap: 0.6rem !important;
             font-size: 11px !important;
             line-height: 1.25 !important;
@@ -233,14 +234,14 @@ export default function CatalogDetailPage() {
 
       {/* Print letterhead — fixed so it repeats on every page */}
       <div
-        className="catalog-print-company-header hidden print:flex print:fixed print:top-0 print:left-0 print:right-0 print:z-100 print:min-h-[12mm] print:items-center print:justify-between print:gap-3 print:px-[10mm] print:py-2 print:bg-[#0c1222] print:text-white print:border-b-[3px] print:border-[#c9a227]"
+        className="catalog-print-company-header hidden print:flex print:fixed print:top-0 print:left-0 print:right-0 print:z-100 print:min-h-[12mm] print:items-center print:justify-between print:gap-3 print:px-[10mm] print:py-2 print:bg-white print:text-slate-900 print:border-b-[3px] print:border-[#c9a227]"
         aria-hidden
       >
         <div className="print:flex print:flex-col print:gap-0.5 print:min-w-0 print:flex-1">
           <span className="print:text-[11.5pt] print:font-bold print:tracking-tight print:font-display print:leading-tight">
             {CATALOG_PRINT.company}
           </span>
-          <span className="print:text-[7.5pt] print:text-slate-400 print:font-medium print:tracking-wide print:uppercase">
+          <span className="print:text-[7.5pt] print:text-slate-500 print:font-medium print:tracking-wide print:uppercase">
             Product catalogue · Technical data sheet
           </span>
         </div>

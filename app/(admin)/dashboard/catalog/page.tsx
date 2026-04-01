@@ -10,7 +10,7 @@ import { Plus, Package, Database } from 'lucide-react';
 import type { CatalogEntry } from '@/types';
 import { useRouter } from 'next/navigation';
 
-export default function AdminCatalogPage() {
+export default function Catalog() {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [brand, setBrand] = useState('');
