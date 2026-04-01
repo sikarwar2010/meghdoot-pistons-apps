@@ -44,7 +44,7 @@ export default function TopBar() {
               <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-1.5">
                 <span className="font-medium">Latest Event: </span>
                 <span className="animate-pulse text-[10px] sm:text-xs">
-                  AutoMechanika 2025 New Delhi - Visit us at Hall 1, Stand No: 1
+                  AutoMechanika 2026 New Delhi - Visit us at Hall 1, Stand No: 1
                   F-65
                 </span>
               </div>

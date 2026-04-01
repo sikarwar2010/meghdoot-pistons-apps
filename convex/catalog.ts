@@ -33,6 +33,11 @@ const ringSizesValidator = v.object({
   ring4: v.optional(v.number()),
   ring5: v.optional(v.number()),
   note: v.optional(v.string()),
+  ring1Specification: v.optional(v.string()),
+  ring2Specification: v.optional(v.string()),
+  ring3Specification: v.optional(v.string()),
+  ring4Specification: v.optional(v.string()),
+  ring5Specification: v.optional(v.string()),
 });
 
 // ── Public Queries ─────────────────────────────────────────────

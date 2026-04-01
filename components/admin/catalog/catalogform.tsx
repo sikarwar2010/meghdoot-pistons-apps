@@ -27,6 +27,11 @@ interface CatalogFormData {
   ring4?: number;
   ring5?: number;
   ringNote?: string;
+  ring1Specification?: string;
+  ring2Specification?: string;
+  ring3Specification?: string;
+  ring4Specification?: string;
+  ring5Specification?: string;
   pistonType?: string;
   imageId?: Id<'_storage'>;
   imageUrl?: string;
@@ -47,6 +52,11 @@ const catalogSchema = z.object({
   ring4: z.coerce.number().optional(),
   ring5: z.coerce.number().optional(),
   ringNote: z.string().optional(),
+  ring1Specification: z.string().optional(),
+  ring2Specification: z.string().optional(),
+  ring3Specification: z.string().optional(),
+  ring4Specification: z.string().optional(),
+  ring5Specification: z.string().optional(),
   pistonType: z.string().optional(),
   imageId: z.custom<Id<'_storage'>>().optional(),
   imageUrl: z.string().optional(),
@@ -86,6 +96,11 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
       ring4: initialData?.ringSizes.ring4,
       ring5: initialData?.ringSizes.ring5,
       ringNote: initialData?.ringSizes.note ?? '',
+      ring1Specification: initialData?.ringSizes.ring1Specification ?? '',
+      ring2Specification: initialData?.ringSizes.ring2Specification ?? '',
+      ring3Specification: initialData?.ringSizes.ring3Specification ?? '',
+      ring4Specification: initialData?.ringSizes.ring4Specification ?? '',
+      ring5Specification: initialData?.ringSizes.ring5Specification ?? '',
       pistonType: initialData?.pistonType ?? '',
       imageId: initialData?.imageId,
       imageUrl: initialData?.imageUrl ?? '',
@@ -110,6 +125,11 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
       ring4: initialData.ringSizes.ring4,
       ring5: initialData.ringSizes.ring5,
       ringNote: initialData.ringSizes.note ?? '',
+      ring1Specification: initialData.ringSizes.ring1Specification ?? '',
+      ring2Specification: initialData.ringSizes.ring2Specification ?? '',
+      ring3Specification: initialData.ringSizes.ring3Specification ?? '',
+      ring4Specification: initialData.ringSizes.ring4Specification ?? '',
+      ring5Specification: initialData.ringSizes.ring5Specification ?? '',
       pistonType: initialData.pistonType ?? '',
       imageId: initialData.imageId,
       imageUrl: initialData.imageUrl ?? '',
@@ -135,6 +155,11 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
         ring4: data.ring4 || undefined,
         ring5: data.ring5 || undefined,
         note: data.ringNote || undefined,
+        ring1Specification: data.ring1Specification?.trim() || undefined,
+        ring2Specification: data.ring2Specification?.trim() || undefined,
+        ring3Specification: data.ring3Specification?.trim() || undefined,
+        ring4Specification: data.ring4Specification?.trim() || undefined,
+        ring5Specification: data.ring5Specification?.trim() || undefined,
       },
       pistonType: data.pistonType || undefined,
       imageId: data.imageId || undefined,
@@ -322,76 +347,83 @@ export function CatalogForm({ initialData, onSuccess, onCancel }: Props) {
 
           {/* Ring Sizes */}
           <div className="rounded-xl border border-border/50 bg-card/40 p-4 sm:p-6">
-            <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm">
+            <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm">
               <span className="h-5 w-5 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
                 3
               </span>
               Ring Sizes
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4">
-              <div>
-                <label className={labelCls}>Ring 1 (mm) *</label>
-                <input
-                  {...register('ring1')}
-                  type="number"
-                  step="0.01"
-                  placeholder="2.50"
-                  className={inputCls}
-                />
-                {errors.ring1 && (
-                  <p className="mt-1 text-xs text-destructive">
-                    {errors.ring1.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className={labelCls}>Ring 2 (mm)</label>
-                <input
-                  {...register('ring2')}
-                  type="number"
-                  step="0.01"
-                  placeholder="4.50"
-                  className={inputCls}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>Ring 3 (mm)</label>
-                <input
-                  {...register('ring3')}
-                  type="number"
-                  step="0.01"
-                  placeholder="—"
-                  className={inputCls}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>Ring 4 (mm)</label>
-                <input
-                  {...register('ring4')}
-                  type="number"
-                  step="0.01"
-                  placeholder="—"
-                  className={inputCls}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>Ring 5 (mm)</label>
-                <input
-                  {...register('ring5')}
-                  type="number"
-                  step="0.01"
-                  placeholder="—"
-                  className={inputCls}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>Note</label>
-                <input
-                  {...register('ringNote')}
-                  placeholder="T15+"
-                  className={inputCls}
-                />
-              </div>
+            <p className="text-xs text-muted-foreground mb-4 max-w-3xl">
+              Enter groove size in mm for each ring. Specification is free text
+              (e.g. Primary, 2nd compression, oil ring)—use what your customer
+              requires; nothing is prefilled.
+            </p>
+            <div className="hidden sm:grid sm:grid-cols-[minmax(0,7rem)_minmax(0,8rem)_1fr] gap-x-3 gap-y-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-0.5">
+              <span>Ring</span>
+              <span>Size (mm)</span>
+              <span>Specification</span>
+            </div>
+            <div className="space-y-4">
+              {(
+                [
+                  { n: 1, req: true },
+                  { n: 2, req: false },
+                  { n: 3, req: false },
+                  { n: 4, req: false },
+                  { n: 5, req: false },
+                ] as const
+              ).map(({ n, req }) => {
+                const ringKey = `ring${n}` as const;
+                const specKey = `ring${n}Specification` as const;
+                return (
+                  <div
+                    key={n}
+                    className="grid grid-cols-1 sm:grid-cols-[minmax(0,7rem)_minmax(0,8rem)_1fr] gap-3 sm:gap-x-3 sm:items-end"
+                  >
+                    <div className="text-sm font-medium text-foreground sm:pb-2.5">
+                      Ring {n}
+                      {req ? (
+                        <span className="text-destructive"> *</span>
+                      ) : null}
+                    </div>
+                    <div>
+                      <label className={`${labelCls} sm:sr-only`}>
+                        Ring {n} (mm){req ? ' *' : ''}
+                      </label>
+                      <input
+                        {...register(ringKey)}
+                        type="number"
+                        step="0.01"
+                        placeholder={req ? '2.50' : '—'}
+                        className={inputCls}
+                      />
+                      {n === 1 && errors.ring1 && (
+                        <p className="mt-1 text-xs text-destructive">
+                          {errors.ring1.message}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className={`${labelCls} sm:sr-only`}>
+                        Ring {n} specification
+                      </label>
+                      <input
+                        {...register(specKey)}
+                        placeholder="e.g. Primary, oil ring"
+                        className={inputCls}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-4 pt-4 border-t border-border/40">
+              <label className={labelCls}>Note</label>
+              <input
+                {...register('ringNote')}
+                placeholder="T15+"
+                className={inputCls}
+              />
             </div>
           </div>
         </div>

@@ -64,6 +64,11 @@ export interface RingSizes {
   ring4?: number;
   ring5?: number;
   note?: string;
+  ring1Specification?: string;
+  ring2Specification?: string;
+  ring3Specification?: string;
+  ring4Specification?: string;
+  ring5Specification?: string;
 }
 
 export interface CatalogEntry {

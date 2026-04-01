@@ -14,9 +14,17 @@ import {
   Tag,
   Calendar,
   Printer,
+  Mail,
+  Globe,
 } from 'lucide-react';
 import { CatalogCoverImage } from '@/components/admin/catalog/CatalogCoverImage';
 import type { Id } from '@/convex/_generated/dataModel';
+
+const CATALOG_PRINT = {
+  company: 'Meghdoot Pistons Private Limited',
+  email: 'meghdootpistons@gmail.com',
+  website: 'https://www.meghdootpistons.com/',
+} as const;
 
 export default function CatalogDetailPage() {
   const params = useParams();
@@ -104,12 +112,37 @@ export default function CatalogDetailPage() {
   );
 
   const ringRows = [
-    { label: 'Ring 1', value: item.ringSizes.ring1, position: 'Primary' },
-    { label: 'Ring 2', value: item.ringSizes.ring2, position: 'Secondary' },
-    { label: 'Ring 3', value: item.ringSizes.ring3, position: 'Tertiary' },
-    { label: 'Ring 4', value: item.ringSizes.ring4, position: 'Quaternary' },
-    { label: 'Ring 5', value: item.ringSizes.ring5, position: 'Quinary' },
+    {
+      label: 'Ring 1',
+      value: item.ringSizes.ring1,
+      specification: item.ringSizes.ring1Specification,
+    },
+    {
+      label: 'Ring 2',
+      value: item.ringSizes.ring2,
+      specification: item.ringSizes.ring2Specification,
+    },
+    {
+      label: 'Ring 3',
+      value: item.ringSizes.ring3,
+      specification: item.ringSizes.ring3Specification,
+    },
+    {
+      label: 'Ring 4',
+      value: item.ringSizes.ring4,
+      specification: item.ringSizes.ring4Specification,
+    },
+    {
+      label: 'Ring 5',
+      value: item.ringSizes.ring5,
+      specification: item.ringSizes.ring5Specification,
+    },
   ];
+
+  const formatRingSpecification = (spec: string | undefined) => {
+    const t = spec?.trim();
+    return t ? t : '—';
+  };
 
   return (
     <>
@@ -117,7 +150,7 @@ export default function CatalogDetailPage() {
         @media print {
           @page {
             size: A4 portrait;
-            margin: 12mm;
+            margin: 10mm 12mm 12mm 12mm;
           }
 
           html,
@@ -127,11 +160,32 @@ export default function CatalogDetailPage() {
             print-color-adjust: exact;
           }
 
+          /* Hide admin chrome so only the catalog sheet prints */
+          .h-screen.overflow-hidden.bg-background > aside {
+            display: none !important;
+          }
+          .flex-1.flex-col.overflow-hidden > header {
+            display: none !important;
+          }
+          main.flex-1.overflow-y-auto {
+            padding: 0 !important;
+            overflow: visible !important;
+            height: auto !important;
+          }
+          .h-screen.overflow-hidden {
+            overflow: visible !important;
+            height: auto !important;
+          }
+
+          .catalog-print-company-header {
+            box-shadow: 0 1px 0 rgba(201, 162, 39, 0.35);
+          }
+
           .catalog-print-root {
             width: 186mm !important;
             max-width: 186mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
+            margin: 0 auto !important;
+            padding: 15mm 0 13mm 0 !important;
             gap: 0.6rem !important;
             font-size: 11px !important;
             line-height: 1.25 !important;
@@ -176,13 +230,49 @@ export default function CatalogDetailPage() {
           }
         }
       `}</style>
+
+      {/* Print letterhead — fixed so it repeats on every page */}
+      <div
+        className="catalog-print-company-header hidden print:flex print:fixed print:top-0 print:left-0 print:right-0 print:z-100 print:min-h-[12mm] print:items-center print:justify-between print:gap-3 print:px-[10mm] print:py-2 print:bg-[#0c1222] print:text-white print:border-b-[3px] print:border-[#c9a227]"
+        aria-hidden
+      >
+        <div className="print:flex print:flex-col print:gap-0.5 print:min-w-0 print:flex-1">
+          <span className="print:text-[11.5pt] print:font-bold print:tracking-tight print:font-display print:leading-tight">
+            {CATALOG_PRINT.company}
+          </span>
+          <span className="print:text-[7.5pt] print:text-slate-400 print:font-medium print:tracking-wide print:uppercase">
+            Product catalogue · Technical data sheet
+          </span>
+        </div>
+      </div>
+
+      <div
+        className="hidden print:grid print:fixed print:bottom-0 print:left-0 print:right-0 print:z-100 print:grid-cols-3 print:items-center print:gap-2 print:min-h-[11mm] print:px-[10mm] print:py-2 print:bg-white print:border-t print:border-slate-200 print:text-[8pt] print:text-slate-600"
+        aria-hidden
+      >
+        <span className="print:font-semibold print:text-slate-900 print:tabular-nums">
+          Since 1967
+        </span>
+        <span className="print:flex print:items-center print:justify-center print:gap-1.5 print:min-w-0">
+          <Mail className="print:h-3.5 print:w-3.5 print:shrink-0 print:text-[#b45309]" />
+          <span className="print:truncate">{CATALOG_PRINT.email}</span>
+        </span>
+        <span className="print:flex print:items-center print:justify-end print:gap-1.5 print:min-w-0">
+          <Globe className="print:h-3.5 print:w-3.5 print:shrink-0 print:text-[#b45309]" />
+          <span className="print:truncate print:font-medium print:text-slate-800">
+            {CATALOG_PRINT.website}
+          </span>
+        </span>
+      </div>
+
       <div className="catalog-print-root space-y-8 fade-up max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 min-w-0">
             <button
+              type="button"
               onClick={() => router.back()}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="print:hidden flex shrink-0 items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ArrowLeft className="h-4 w-4 " /> Back
             </button>
@@ -359,7 +449,7 @@ export default function CatalogDetailPage() {
                     Size (mm)
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Position
+                    Specification
                   </th>
                 </tr>
               </thead>
@@ -381,7 +471,7 @@ export default function CatalogDetailPage() {
                       {ring.value != null ? ring.value.toFixed(2) : 'N/A'}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {ring.position}
+                      {formatRingSpecification(ring.specification)}
                     </td>
                   </tr>
                 ))}
