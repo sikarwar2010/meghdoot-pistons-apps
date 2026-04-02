@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { SignInButton, SignOutButton, UserButton } from '@clerk/nextjs';
+import { Show, SignInButton, SignOutButton, UserButton } from '@clerk/nextjs';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
@@ -16,8 +16,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ThemeToggle } from '@/components/commons/ThemeToggle';
-import { Authenticated, Unauthenticated } from 'convex/react';
-
 const navItems = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
@@ -147,7 +145,7 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <div className="md:hidden">
-              <Unauthenticated>
+              <Show when={"signed-in"}>
                 <SignInButton mode="modal">
                   <Button variant="ghost" size="icon">
                     <svg
@@ -167,9 +165,9 @@ export default function Header() {
                     </svg>
                   </Button>
                 </SignInButton>
-              </Unauthenticated>
+              </Show>
 
-              <Authenticated>
+              <Show when={"signed-in"}>
                 <UserButton
                   appearance={{
                     elements: {
@@ -179,7 +177,7 @@ export default function Header() {
                     },
                   }}
                 />
-              </Authenticated>
+              </Show>
             </div>
             <Button
               variant="ghost"
@@ -193,15 +191,15 @@ export default function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-2">
-            <Unauthenticated>
+            <Show when={"signed-out"}>
               <SignInButton mode="modal">
                 <Button variant="ghost" size="sm">
                   Sign In
                 </Button>
               </SignInButton>
-            </Unauthenticated>
+            </Show>
 
-            <Authenticated>
+            <Show when={"signed-in"}>
               <Button asChild variant="outline" size="sm">
                 <Link href={'/dashboard'}>Dashboard</Link>
               </Button>
@@ -214,7 +212,7 @@ export default function Header() {
                   },
                 }}
               />
-            </Authenticated>
+            </Show>
           </div>
         </div>
       </div>
@@ -308,7 +306,7 @@ export default function Header() {
                 );
               })}
               <div className="w-full pt-4 border-t mt-4">
-                <Unauthenticated>
+                <Show when={"signed-out"}>
                   <SignInButton mode="modal">
                     <Button
                       variant="outline"
@@ -332,8 +330,8 @@ export default function Header() {
                       Sign In
                     </Button>
                   </SignInButton>
-                </Unauthenticated>
-                <Authenticated>
+                </Show>
+                <Show when={"signed-in"}>
                   <Button
                     asChild
                     variant="outline"
@@ -384,7 +382,7 @@ export default function Header() {
                       Sign Out
                     </Button>
                   </SignOutButton>
-                </Authenticated>
+                </Show>
               </div>
             </nav>
           </div>

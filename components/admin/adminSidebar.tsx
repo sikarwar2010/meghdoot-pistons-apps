@@ -37,7 +37,9 @@ function getVisibleNavItems(role: AppRole) {
   if (normalizedRole === 'member') {
     return nav.filter((item) => item.href !== '/dashboard/users');
   }
-  return nav.filter((item) => item.href === '/dashboard/blogs');
+  return nav.filter(
+    (item) => item.href === '/dashboard' || item.href === '/dashboard/blogs'
+  );
 }
 
 function SidebarContent({ role }: { role: AppRole }) {
