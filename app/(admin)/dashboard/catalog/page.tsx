@@ -24,7 +24,6 @@ export default function Catalog() {
 
   const brands = useQuery(api.catalog.getBrands);
   const remove = useMutation(api.catalog.remove);
-  const seed = useMutation(api.catalog.seed);
 
   const handleDelete = async (item: CatalogEntry) => {
     if (!confirm(`Delete ${item.brand} ${item.model}?`)) return;
@@ -38,21 +37,6 @@ export default function Catalog() {
 
   const handleViewDetails = (item: CatalogEntry) => {
     router.push(`/dashboard/catalog/${item._id}`);
-  };
-
-  const handleSeed = async () => {
-    if (
-      !confirm(
-        'Seed the database with sample data from the uploaded catalog image?'
-      )
-    )
-      return;
-    try {
-      const result = await seed();
-      toast.success(`Seeded ${(result as any).seeded} catalog entries`);
-    } catch (e: any) {
-      toast.error(e.message ?? 'Failed to seed');
-    }
   };
 
   if (showForm || editing) {
@@ -81,12 +65,6 @@ export default function Catalog() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleSeed}
-            className="flex items-center gap-2 rounded-lg border border-border/50 bg-secondary/40 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-colors"
-          >
-            <Database className="h-4 w-4" /> Seed Data
-          </button>
           <button
             onClick={() => setShowForm(true)}
             className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -130,12 +108,6 @@ export default function Catalog() {
           <Package className="mx-auto h-10 w-10 text-muted-foreground mb-3" />
           <p className="text-muted-foreground mb-3">No catalog entries yet</p>
           <div className="flex items-center justify-center gap-3">
-            <button
-              onClick={handleSeed}
-              className="text-sm text-primary hover:underline"
-            >
-              Seed sample data
-            </button>
             <span className="text-muted-foreground">or</span>
             <button
               onClick={() => setShowForm(true)}
